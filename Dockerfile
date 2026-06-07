@@ -7,6 +7,9 @@ LABEL app="banksys"
 
 WORKDIR /app
 
+# Python 需能找到 app 包(代码在 /app/app/)
+ENV PYTHONPATH=/app
+
 # 系统依赖(Streamlit 可能需要)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
