@@ -25,6 +25,9 @@ COPY app/ ./app/
 COPY model/ ./model/
 COPY data/ ./data/
 
+# 构建时训练模型(避免容器启动后手动训练)
+RUN python model/train.py
+
 # 容器内固定端口 8501
 EXPOSE 8501
 
