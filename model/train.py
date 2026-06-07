@@ -239,9 +239,7 @@ def train(
             test_metrics = evaluate_model(pipeline, X_test, y_test)
             print(f"📈 测试集指标: {test_metrics}")
         else:
-            print(
-                f"⚠️ 测试数据不含目标列 '{TARGET_COL}',跳过评估,仅做训练集验证。"
-            )
+            print(f"⚠️ 测试数据不含目标列 '{TARGET_COL}',跳过评估,仅做训练集验证。")
     else:
         print("⚠️ 测试数据不存在,跳过测试集评估。")
 
