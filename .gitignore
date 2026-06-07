@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+*.egg
+
+# 模型产物
+model/artifacts/*.joblib
+model/artifacts/*.pkl
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 环境变量(不包含 .env.example)
+.env
+
+# Jupyter
+.ipynb_checkpoints/
+
+# pytest-cov
+.coverage
+htmlcov/
