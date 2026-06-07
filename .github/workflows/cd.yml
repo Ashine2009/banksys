@@ -1,0 +1,32 @@
+# banksys CD — main 合并触发,本地 Docker 部署
+name: CD
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t banksys:latest .
+
+      - name: Run container & health check
+        run: |
+          docker rm -f banksys 2>/dev/null || true
+          docker run -d --name banksys --restart unless-stopped -p 8004:8501 banksys:latest
+          sleep 5
+          for i in $(seq 1 12); do
+            if curl -fsS http://localhost:8004/_stcore/health; then
+              echo ">> banksys healthy at http://localhost:8004"
+              exit 0
+            fi
+            echo "Waiting for health check... ($i/12)"
+            sleep 5
+          done
+          echo "ERROR: Health check timeout"
+          docker logs banksys
+          exit 1

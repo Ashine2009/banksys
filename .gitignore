@@ -8,9 +8,10 @@ build/
 venv/
 *.egg
 
-# 模型产物
+# 模型产物(不进 Git,由 train.py 生成)
 model/artifacts/*.joblib
 model/artifacts/*.pkl
+model/artifacts/*.json
 
 # IDE
 .vscode/
