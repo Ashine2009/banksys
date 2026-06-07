@@ -1,0 +1,46 @@
+# banksys CI — PR 触发
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches-ignore: [main]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements-dev.txt
+
+      - name: Format check (ruff)
+        run: ruff format --check .
+
+      - name: Lint check (ruff)
+        run: ruff check .
+
+      - name: Unit tests with coverage
+        run: pytest --cov --cov-fail-under=80 --cov-report=term
+
+      - name: Train model & check AUC
+        run: |
+          python model/train.py
+          echo "Model training passed with AUC >= 0.70"
+
+  docker-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t banksys:ci .
